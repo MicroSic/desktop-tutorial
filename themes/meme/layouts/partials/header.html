@@ -1,0 +1,44 @@
+{{ if or (or (and .IsHome .Site.Params.displayHeaderInHome) (eq .Site.Params.headerLayout "flex")) (and (not .IsHome) .Site.Params.enableHeader) }}
+<header class="header">
+
+    {{ if eq .Site.Params.headerLayout "flex" }}
+    <div class="header-wrapper">
+        <div class="header-inner {{ cond (or .IsHome (eq (len .Pages) 0)) "single" "list"}}">
+            {{ template "site-brand" . }}
+            {{ partial "menu.html" . }}
+            {{ partial "custom/header.html" . }}
+        </div>
+    </div>
+    {{ partial "components/nav-toggle.html" . }}
+    {{ else }}
+    {{ template "site-brand" . }}
+    {{ end }}
+</header>
+{{ end }}
+
+{{ define "site-brand" }}
+
+<div class="site-brand">
+    {{ if .Site.Params.siteBrandSVG }}
+    <a href="{{ print `/` | relLangURL }}">{{ partial "utils/icon.html" (dict "$" . "name" "brand") }}</a>
+    {{ else }}
+    <a href="{{ print `/` | relLangURL }}" class="brand">{{ .Site.Title }}</a>
+    {{ end }}
+</div>
+{{ end }}
+
+<script src="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/js/nprogress.min.js"
+        integrity="sha384-bHDlAEUFxsRI7JfULv3DTpL2IXbbgn4JHQJibgo5iiXSK6Iu8muwqHANhun74Cqg"
+        crossorigin="anonymous"></script>
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/zhixuan2333/gh-blog@v0.1.0/css/nprogress.css"
+      integrity="sha384-KJyhr2syt5+4M9Pz5dipCvTrtvOmLk/olWVdfhAp858UCa64Ia5GFpTN7+G4BWpE"
+      crossorigin="anonymous" />
+<script>
+    NProgress.start();
+    document.addEventListener("readystatechange", () => {
+        if (document.readyState === "interactive") NProgress.inc(0.8);
+        if (document.readyState === "complete") NProgress.done();
+    });
+</script>
+
